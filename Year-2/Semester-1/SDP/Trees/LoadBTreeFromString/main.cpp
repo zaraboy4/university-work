@@ -1,6 +1,6 @@
-#include "headers/Stack.hpp"
-#include "headers/helpFunctions.hpp"
-#include "headers/TreeNode.hpp"
+#include "Stack.hpp"
+#include "helpFunctions.hpp"
+#include "TreeNode.hpp"
 
 void apply(Stack<Node*>& nodes) {
     if (nodes.isEmpty())
