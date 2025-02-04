@@ -1,6 +1,6 @@
-#include "Stack.hpp"
-#include "helpFunctions.hpp"
-#include "TreeNode.hpp"
+#include "headers/Stack.hpp"
+#include "headers/helpFunctions.hpp"
+#include "headers/TreeNode.hpp"
 
 void apply(Stack<Node*>& nodes) {
     if (nodes.isEmpty())
@@ -24,6 +24,12 @@ Node* strToTree(const char* str) {
     while (*str != 0) {
         if (isSpace(*str)) { ++str; }
         else if (isNullptr(*str)) { nodes.push(nullptr); ++str; }
+        else if (isMinus(*str)) { 
+            ++str; 
+            if (!isDigit(*str))
+                throw std::invalid_argument("expected number after -");
+            nodes.push( new Node((-1) * getNum(str)));
+        }
         else if (isDigit(*str)) { nodes.push(new Node(getNum(str))); }
         else if (isOpeningBr(*str)) {
             brackets.push(*str);
@@ -52,14 +58,15 @@ Node* strToTree(const char* str) {
 
 int main() {
     char str[255];
-    std::cout << "Enter input: ";
     std::cin.getline(str, 255);
-    while (*str != 'q') {
-        Node* btree = strToTree(str);
-        print(btree); std::cout << "\n";
-        destruct(btree);
-        std::cout << "Enter input: ";
-        std::cin.getline(str, 255);
-    }
+    Node* btree = strToTree(str);
+    std::cout << "before: ";
+    print(btree); std::cout << std::endl;
+    std::cout << "Enter el to remove: ";
+    int n; std::cin >> n;
+    remove(btree, n);
+    std::cout << "after: ";
+    print(btree);
+    destruct(btree);
     return 0;
 }
