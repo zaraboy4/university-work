@@ -58,6 +58,7 @@ Node* strToTree(const char* str) {
 
 int main() {
     char str[255];
+    std::cout << "Enter str: ";
     std::cin.getline(str, 255);
     Node* btree = strToTree(str);
     std::cout << "before: ";
