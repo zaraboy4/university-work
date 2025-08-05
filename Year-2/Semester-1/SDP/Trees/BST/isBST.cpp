@@ -28,6 +28,14 @@ bool isBST(Node* root) {
 }
 
 int main() {
-
+    Node* btree = new Node(9, 
+                    new Node(3, 
+                        new Node(1), 
+                        new Node(5)), 
+                    new Node(10, 
+                        new Node(10), 
+                        new Node(13)));
+    std::cout << (isBST(btree) ? "bst" : "not bst") << '\n';
+    destruct(btree);
     return 0;
 }
