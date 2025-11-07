@@ -1,10 +1,5 @@
 #include <iostream>
 #include "./StaticQueue.hpp"
- // add comment
-
-void func() {
-
-}
 
 int main() {
     try {
