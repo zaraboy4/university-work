@@ -1,15 +1,17 @@
 #ifndef _HEADER_LINKED_LIST
 #define _HEADER_LINKED_LIST
 
+#include <iostream>
+
 template <class T>
 class List {
 public:
     List() : head(nullptr), tail(nullptr), size(0) {}
-    List(const List&);
+    List(const List& src) { copy(src); }
     List(List&&);
     List& operator=(const List&);
     List& operator=(List&&);
-    ~List();
+    ~List() { del(); }
 
     bool empty() const { return !head; }
 private:
@@ -24,6 +26,32 @@ private:
     void copy(const List&);
     void del();
 };
+
+template <class T>
+List<T>::List(List&& src) : List() {
+    std::swap(head, src.head);
+    std::swap(tail, src.tail);
+    std::swap(size, src.size);
+}
+
+template <class T>
+List<T>& List<T>::operator=(const List& src) {
+    if (this != &src) {
+        del();
+        copy(src);
+    }
+    return *this;
+}
+
+template <class T>
+List<T>& List<T>::operator=(List&& src) {
+    if (this != &src) {
+        std::swap(head, src.head);
+        std::swap(tail, src.tail);
+        std::swap(size, src.size);
+    }
+    return *this;
+}
 
 template <class T>
 void List<T>::copy(const List& src) {
