@@ -1,3 +1,4 @@
 *.exe
 *.hpp.gch
 *.json
+*.out
