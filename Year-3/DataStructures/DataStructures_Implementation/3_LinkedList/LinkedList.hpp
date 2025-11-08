@@ -13,6 +13,12 @@ public:
     List& operator=(List&&);
     ~List() { del(); }
 
+    class Iterator;
+    Iterator begin() const { return Iterator(head); }
+    Iterator end() const { return Iterator(); }
+
+    void pushBack(const T&);
+
     bool empty() const { return !head; }
 private:
     struct Node {
@@ -25,6 +31,39 @@ private:
 private:
     void copy(const List&);
     void del();
+};
+
+template <class T>
+class List<T>::Iterator {
+private:
+    friend class List<T>;
+    Node* ptr;
+public:
+    Iterator(Node* p = nullptr) : ptr(p) {}
+    bool valid() const { return ptr; }
+    operator bool() const { return valid(); }
+    Iterator next() {
+        if (!valid()) 
+            return *this; 
+        else 
+            return Iterator(ptr->next);
+    }
+    Iterator& operator++() { *this = next(); return *this; }
+    Iterator operator++(int) {
+        Iterator saved = *this;
+        ++(*this);
+        return saved;
+    }
+    bool operator==(const Iterator& oth) { return ptr == oth.ptr; }
+    bool operator!=(const Iterator& oth) { return !(*this == oth); }
+    T& operator*() { return ptr->data; }
+    const T& operator*() const { return ptr->data; }
+    Iterator& operator+=(unsigned int n) {
+        for (int i = 0; i < n; ++i) {
+            ++(*this);
+        }
+        return *this;
+    }
 };
 
 template <class T>
@@ -79,9 +118,22 @@ void List<T>::del() {
         temp = head;
         head = head->next;
         delete temp;
+        std::cout << "delete node\n";
     }
     tail = head;
     size = 0;
+}
+
+template <class T>
+void List<T>::pushBack(const T& el) {
+    Node* toAdd = new Node(el);
+    if (empty())
+        head = tail = toAdd;
+    else {
+        tail->next = toAdd;
+        tail = tail->next;
+    }
+    ++size;
 }
 
 #endif
