@@ -16,8 +16,21 @@ public:
     class Iterator;
     Iterator begin() const { return Iterator(head); }
     Iterator end() const { return Iterator(); }
+    Iterator last() const { return Iterator(tail); }
 
-    void pushBack(const T&);
+    bool insertAfter(const Iterator&, const T&);
+    bool insertBefore(const Iterator&, const T&);
+
+    bool removeAfter(const Iterator&);
+    bool removeBefore(const Iterator&);
+
+    // void pushBack(const T&);
+    bool popBack();
+    bool pushFront(const T&);
+    bool popFront();
+
+    Iterator findPrev(const Iterator&) const;
+    bool pushBack(const T&);
 
     bool empty() const { return !head; }
 private:
@@ -125,7 +138,7 @@ void List<T>::del() {
 }
 
 template <class T>
-void List<T>::pushBack(const T& el) {
+bool List<T>::pushBack(const T& el) {
     Node* toAdd = new Node(el);
     if (empty())
         head = tail = toAdd;
@@ -134,6 +147,57 @@ void List<T>::pushBack(const T& el) {
         tail = tail->next;
     }
     ++size;
+    return true;
+}
+
+template <class T>
+bool List<T>::insertAfter(const Iterator& it, const T& el) {
+    if (empty() || !it)
+        return false;
+    Node* n = it.ptr->next;
+    it.ptr->next = new Node(el, n);
+    if (it == last()) {
+        tail = tail->next;
+    }
+    ++size;
+    return true;
+}
+
+template <class T>
+bool List<T>::insertBefore(const Iterator& it, const T& el) {
+    if (empty() || !it)
+        return false;
+    if (it == begin()) {
+        pushFront(el);
+    }
+    else {
+        Iterator prev = findPrev(it);
+        prev.ptr->next = new Node(el, it.ptr);
+        ++size;   
+    }
+    return true; 
+}
+
+template <class T>
+bool List<T>::pushFront(const T& el) {
+    if (empty()) {
+        head = tail = new Node(el);
+        tail = tail->next;
+    }
+    else {
+        head = new Node(el, head);
+    }
+    ++size;
+    return true;
+}
+
+
+template <class T>
+typename List<T>::Iterator List<T>::findPrev(const Iterator& it) const {
+    Iterator result = begin();
+    while (result && result.next() != it) 
+        ++result;
+    return result;
 }
 
 #endif
