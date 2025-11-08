@@ -182,7 +182,6 @@ template <class T>
 bool List<T>::pushFront(const T& el) {
     if (empty()) {
         head = tail = new Node(el);
-        tail = tail->next;
     }
     else {
         head = new Node(el, head);
