@@ -1,4 +1,4 @@
-#include "D:/uni/kurs3/sdp/DataStructures_Implementation/1_Stack/StaticStack/StaticStack.hpp"
+#include "D:/uni/university-work/Year-3/DataStructures/DataStructures_Implementation/1_Stack/StaticStack/StaticStack.hpp"
 
 #include <iostream>
 #include <fstream>
