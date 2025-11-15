@@ -49,6 +49,13 @@ int main() {
     for (int i = 1; i <= 20; ++i) {
         xs.pushBack(i);
     }
+    for (List<int>::Iterator it = xs.begin(); it; ++it) {
+        *it *= 2;
+    }
+    std::cout << "\n";
+    for (int x : xs) {
+        std::cout << x << ' ';
+    }
     // test_InsertAfter(xs);
-    test_InsertBefore(xs);
+    // test_InsertBefore(xs);
 }
