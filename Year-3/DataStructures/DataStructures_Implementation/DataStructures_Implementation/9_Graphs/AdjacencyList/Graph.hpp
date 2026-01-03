@@ -1,12 +1,14 @@
 #ifndef _GRAPH_ADJANCENCY_LIST_IMPLEMENTATION_HPP
 #define _GRAPH_ADJANCENCY_LIST_IMPLEMENTATION_HPP
 
-#include <vector>
+#include <list>
 
 template <class T>
 class Graph {
 private:
-    std::vector<std::vector<T>> g;
+    std::list<std::list<T>> g;
+private:
+    std::list<T>* findVertexList(const T&) const;
 public:
     bool addVertex(const T&);
     bool removeVertex(const T&);
@@ -16,64 +18,83 @@ public:
     bool removeEdge(const T&, const T&);
     bool hasEdge(const T&, const T&) const;
 
-    std::vector<T> getVertices() const;
-    std::vector<T> getSuccessors(const T&) const;
+    std::list<T> getVertices() const;
+    std::list<T>::iterator getSuccessors(const T&) const;
 };
+
+template <class T>
+std::list<T>* Graph<T>::findVertexList(const T& v) const {
+    for (std::list<std::list<T>>::iterator it = g.begin(); it != g.end(); ++it) {
+        std::list<T>::iterator currListIt = (*it).begin();
+        if (*currListIt == v) {
+            return &*it;
+        }
+    }
+    return nullptr;
+}
 
 template <class T>
 bool Graph<T>::addVertex(const T& v) {
     if (hasVertex()) {
         return false;
     }
-    std::vector<T> newList;
+    std::list<T> newList;
     newList.push_back(v);
     g.push_back(newList);
     return true;
 }
 
+// template <class T>
+// bool Graph<T>::removeVertex(const T& v) {
+//     if (!hasVertex()) {
+//         return false;
+//     }
+//     for (std::list<T>::iterator it = begin(); it != end(); ++it) {
+//         if (*(*it).begin() == v) {
+            
+//         }
+//     }
+// }
+
+// template <class T>
+// bool Graph<T>::hasVertex(const T& v) const {
+//     std::list<T> vertices = getVertices();
+//     for (const T& u : vertices) {
+//         if (u == v) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
+
 template <class T>
-bool Graph<T>::removeVertex(const T& v) {
-    if (!hasVertex()) {
+bool Graph<T>::addEdge(const T& u, const T& v) {
+    std::list<T>* ptrVertexList = findVertexList(u);
+    if (ptrVertexList == nullptr) {
         return false;
     }
-    for (std::vector<T>::iterator it = begin(); it != end(); ++it) {
-        if (*(*it).begin() == v) {
-            
-        }
-    }
+    ptrVertexList->push_back(v);
+    return true;
 }
 
-template <class T>
-bool Graph<T>::hasVertex(const T& v) const {
-    std::vector<T> vertices = getVertices();
-    for (const T& u : vertices) {
-        if (u == v) {
-            return true;
-        }
-    }
-    return false;
-}
+// template <class T>
+// std::list<T> Graph<T>::getVertices() const {
+//     std::list<T> vertices;
+//     for (const std::list<T>& list : g) {
+//         vertices.push_back(list.front());
+//     }
+//     return vertices;
+// }
 
 template <class T>
-std::vector<T> Graph<T>::getVertices() const {
-    std::vector<T> vertices;
-    for (const std::vector<T>& list : g) {
-        vertices.push_back(list.front());
+std::list<T>::iterator Graph<T>::getSuccessors(const T& v) const {
+    std::list<T>* ptrVertexList = findVertexList(v);
+    if (ptrVertexList == nullptr) {
+        return std::list<T>::iterator();
     }
-    return vertices;
-}
-
-template <class T>
-std::vector<T> Graph<T>::getSuccessors(const T& v) const {
-    std::vector<T> successors;
-    for (const std::vector<T>& list : g) {
-        if (list.front() == v) {
-            successors = list;
-            successors.erase(successors.begin());
-            break;
-        }
-    }
-    return successors;
+    std::list<T>::iterator it = ptrVertexList->begin();
+    ++it;
+    return it;
 }
 
 #endif
