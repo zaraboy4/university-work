@@ -13,7 +13,7 @@ private:
 public:
     bool addVertex(const T&);
     bool removeVertex(const T&);
-    bool hasVertex(const T&) const;
+    bool hasVertex(const T&);
 
     bool addEdge(const T&, const T&);
     bool removeEdge(const T&, const T&);
@@ -59,16 +59,10 @@ bool Graph<T>::addVertex(const T& v) {
 //     }
 // }
 
-// template <class T>
-// bool Graph<T>::hasVertex(const T& v) const {
-//     std::list<T> vertices = getVertices();
-//     for (const T& u : vertices) {
-//         if (u == v) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
+template <class T>
+bool Graph<T>::hasVertex(const T& v) {
+    return findVertexList(v) != nullptr;
+}
 
 template <class T>
 bool Graph<T>::addEdge(const T& u, const T& v) {

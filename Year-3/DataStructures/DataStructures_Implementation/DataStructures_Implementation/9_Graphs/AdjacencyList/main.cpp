@@ -16,5 +16,8 @@ int main() {
     for (const int& v : vs) {
         std::cout << v << ' ';
     }
+    std::cout << '\n';
+    std::cout << g.hasVertex(2) << ' ';
+    std::cout << g.hasVertex(6);
     return 0;
 }
