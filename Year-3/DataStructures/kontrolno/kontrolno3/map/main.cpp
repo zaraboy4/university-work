@@ -23,7 +23,8 @@ int main() {
     m.insert({2, "Bogdan"});
 
     // find връща итератор към намерения елемент
-    std::map<int, std::string>::iterator it = m.find(3);
+    // std::map<int, std::string>::iterator it = m.find(3); 
+    auto it = m.find(3);
     std::cout << "key: " << it->first << '\n'; // 3
     std::cout << "value: " << it->second << '\n'; // Petkan
 
