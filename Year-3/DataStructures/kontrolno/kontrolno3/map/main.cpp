@@ -12,6 +12,12 @@ int main() {
     auto p = m.insert({1, "Ivan"});
     std::cout << "key: " << p.first->first << '\n';
     std::cout << "is inserted: " << p.second << '\n';
+
+    auto p2 = m.insert({1, "Petar"}); // ако двойка с такъв ключ вече има в мапа, 
+                                      //то се връща итератор към нея
+    std::cout << "key: " << p2.first->first << '\n';
+    std::cout << "value: " << p2.first->second << '\n';
+    std::cout << "is inserted: " << p2.second << '\n';
     
     m.insert({3, "Petkan"});
     m.insert({2, "Bogdan"});
