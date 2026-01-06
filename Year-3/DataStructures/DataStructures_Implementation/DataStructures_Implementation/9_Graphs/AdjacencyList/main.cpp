@@ -12,7 +12,5 @@ int main() {
     g.addEdge(4, 5);
     g.addEdge(5, 3);
     g.print();
-    std::cout << g.removeEdge(4, 5) << '\n';
-    g.print();
     return 0;
 }
