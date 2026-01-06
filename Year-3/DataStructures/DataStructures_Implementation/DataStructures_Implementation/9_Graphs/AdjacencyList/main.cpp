@@ -1,7 +1,7 @@
-#include "./Graph.hpp"
+#include "./Graph_2.hpp"
 
 int main() {
-    Graph<int> g;
+    Graph g;
     for (int i = 0; i < 5; ++i) {
         g.addVertex(i + 1);
     }
@@ -12,12 +12,7 @@ int main() {
     g.addEdge(4, 5);
     g.addEdge(5, 3);
     g.print();
-    std::list<int> vs = g.getVertices();
-    for (const int& v : vs) {
-        std::cout << v << ' ';
-    }
-    std::cout << '\n';
-    std::cout << g.hasVertex(2) << ' ';
-    std::cout << g.hasVertex(6);
+    std::cout << g.removeEdge(4, 5) << '\n';
+    g.print();
     return 0;
 }
