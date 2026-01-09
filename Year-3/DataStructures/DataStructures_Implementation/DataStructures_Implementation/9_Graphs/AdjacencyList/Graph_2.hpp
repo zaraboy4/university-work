@@ -1,6 +1,7 @@
 #include <vector>
 #include <utility>
 #include <iostream>
+#include <queue>
 
 class Graph {
 private:
@@ -79,6 +80,27 @@ public:
         return false;
     }
 
+    const std::vector<int>* findListVertex(const int& v) const {
+        for (std::vector<std::vector<int>>::const_iterator itLists = g.cbegin(); itLists != g.cend(); ++itLists) {
+            std::vector<int>::const_iterator itCurrList = (*itLists).cbegin();
+            if (*itCurrList == v) {
+                return &*itLists;
+            }
+        }
+        return nullptr;
+    }
+
+    std::pair<std::vector<int>::const_iterator, std::vector<int>::const_iterator> getSuccessors(const int& v) const {
+        const std::vector<int>* ptrVertexList = findListVertex(v);
+        std::vector<int>::const_iterator it_end = ptrVertexList->cend();
+        if (!ptrVertexList) {
+            return std::pair(it_end, it_end);
+        }
+        std::vector<int>::const_iterator it_begin = ptrVertexList->begin();
+        ++it_begin;
+        return std::pair(it_begin, it_end);
+    }
+
     void print() const {
         for (const std::vector<int>& l : g) {
             for (const int& el : l) {
@@ -88,8 +110,8 @@ public:
         }
         std::cout << '\n';
     }
-    void printSuccessors(const int& v) {
-        std::pair<std::vector<int>::iterator, std::vector<int>::iterator> p = getSuccessors(v);
+    void printSuccessors(const int& v) const {
+        std::pair<std::vector<int>::const_iterator, std::vector<int>::const_iterator> p = getSuccessors(v);
         if (p.first == p.second) {
             std::cout << "vertex has no successors\n";
         }
@@ -101,6 +123,38 @@ public:
             std::cout << '\n';
         }
     }
+    void dfs(const int& v) const {
+        std::vector<int> visited;
+        dfsRec(v, v, visited);
+        std::cout << '\n';
+    }
+    void bfs(const int& v) const {
+        std::queue<int> q;
+        q.push(v);
+        std::vector<int> visited;
+        visited.push_back(v);
+        while (!q.empty()) {
+            int el = q.front();
+            q.pop();
+            // std::cout << el << ' ';
+            auto p = getSuccessors(el);
+            while (p.first != p.second) {
+                if (!member(*p.first, visited)) {
+                    std::cout << '(' << el << ", " << *p.first << ')';
+                    q.push(*p.first);
+                    visited.push_back(*p.first);
+                }
+                ++p.first;
+            }
+        }
+        std::cout << '\n';
+    }
+    bool member(const int& el, std::vector<int>& xs) const {
+        for (const int& x : xs) {
+            if (x == el) return true;
+        }
+        return false;
+    }
 private:
     std::vector<int>* findListVertex(const int& v) {
         for (std::vector<std::vector<int>>::iterator itLists = g.begin(); itLists != g.end(); ++itLists) {
@@ -111,15 +165,7 @@ private:
         }
         return nullptr;
     }
-    const std::vector<int>* findListVertex(const int& v) const {
-        for (std::vector<std::vector<int>>::const_iterator itLists = g.cbegin(); itLists != g.cend(); ++itLists) {
-            std::vector<int>::const_iterator itCurrList = (*itLists).cbegin();
-            if (*itCurrList == v) {
-                return &*itLists;
-            }
-        }
-        return nullptr;
-    }
+
     std::pair<std::vector<int>::iterator, std::vector<int>::iterator> getSuccessors(const int& v) {
         std::vector<int>* ptrVertexList = findListVertex(v);
         std::vector<int>::iterator it_end = ptrVertexList->end();
@@ -129,5 +175,19 @@ private:
         std::vector<int>::iterator it_begin = ptrVertexList->begin();
         ++it_begin;
         return std::pair(it_begin, it_end);
+    }
+  
+    void dfsRec(const int& v, const int& parent, std::vector<int>& visited) const {
+        if (!visited.empty()) {
+            std::cout << '(' << parent << ", " << v << ")";
+        }
+        visited.push_back(v);
+        std::pair<std::vector<int>::const_iterator, std::vector<int>::const_iterator> p = getSuccessors(v);
+        while (p.first != p.second) {
+            if (!member(*p.first, visited)) {
+                dfsRec(*p.first, v, visited);
+            }
+            ++p.first;
+        }
     }
 };
