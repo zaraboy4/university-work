@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <queue>
 #include <set>
 
 class Graph {
@@ -58,10 +59,45 @@ bool containsCycle(const Graph& graph) {
     return false;
 }
 
+void topologicalSort(const Graph& graph, std::vector<unsigned>& list) {
+    std::vector<unsigned> inDegree(graph.V, 0);
+    for (unsigned i = 0; i < graph.V; ++i) {
+        for (unsigned child : graph.g[i]) {
+            inDegree[child]++;
+        }
+    }
+    std::queue<unsigned> q;
+    for (unsigned i = 0; i < graph.V; ++i) {
+        if (inDegree[i] == 0) {
+            q.push(i);
+        }
+    }
+    while (!q.empty()) {
+        unsigned v = q.front();
+        q.pop();
+        list.push_back(v);
+        for (unsigned child : graph.g[v]) {
+            inDegree[child]--;
+            if (inDegree[child] == 0) {
+                q.push(child);
+            }
+        }
+
+    }
+    if (list.size() != graph.V) {
+        std::cout << "Graph has cycle\n";
+    }
+}
+
 int main() {
     std::ifstream ifs("input.txt");
     Graph graph(ifs);
     graph.print();
     std::cout << "cycle: " << containsCycle(graph) << '\n';
+    std::vector<unsigned> topSorted;
+    topologicalSort(graph, topSorted);
+    for (unsigned t : topSorted) {
+        std::cout << t << ' ';
+    }
     return 0;
 }
