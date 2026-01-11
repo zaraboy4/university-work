@@ -29,6 +29,10 @@ bool containsCycleDFS(const Graph& graph, const unsigned& v, std::set<unsigned>&
     path.insert(v);
     for (const unsigned& u : graph.g[v]) {
         if (path.find(u) != path.end()) {
+            for (const unsigned& p : path) {
+                std::cout << p << ' ';
+            }
+            std::cout << '\n';
             return true;
         }
         if (!visited[u] && containsCycleDFS(graph, u, path, visited)) {
@@ -54,6 +58,7 @@ int main() {
     graph.addEdge(4, 5);
     graph.addEdge(5, 0);
     graph.print();
-    std::cout << containsCycle(graph, 1);
+    bool cycle = containsCycle(graph, 1);
+    std::cout << "is cycle: " << cycle << '\n';
     return 0;
 }
