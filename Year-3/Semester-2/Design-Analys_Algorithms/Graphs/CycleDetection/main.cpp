@@ -56,11 +56,12 @@ bool cycleDetectionDFS_directed(Graph& graph) {
     return false;
 }
 
-bool cycleDFS_undirected(Graph& graph, int v, std::vector<int>& state) {
+bool cycleDFS_undirected(Graph& graph, int v, std::vector<int>& state, int prev) {
     state[v] = 2;
     for (int u : graph.g[v]) {
+        if (u == prev) continue;
         if (state[u] == 2) return true;
-        if (state[u] == 0 && cycleDFS_undirected(graph, u, state)) {
+        if (state[u] == 0 && cycleDFS_undirected(graph, u, state, v)) {
             return true;
         }
     }
@@ -70,7 +71,7 @@ bool cycleDFS_undirected(Graph& graph, int v, std::vector<int>& state) {
 bool cycleDetectionDFS_undirected(Graph& graph) {
     std::vector<int> state(graph.V, 0);
     for (int v = 0; v < graph.V; ++v) {
-        if (state[v] == 0 && cycleDFS_undirected(graph, v, state)) {
+        if (state[v] == 0 && cycleDFS_undirected(graph, v, state, -1)) {
             return true;
         }
     }
