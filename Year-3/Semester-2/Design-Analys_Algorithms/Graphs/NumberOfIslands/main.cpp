@@ -1,5 +1,21 @@
 #include <vector>
 #include <iostream>
+#include <queue>
+
+void bfs(const std::vector<std::vector<int>>& g, int start, std::vector<bool>& visited) {
+    std::queue<int> q;
+    q.push(start);
+    while (!q.empty()) {
+        int curr = q.front();
+        q.pop();
+        visited[curr] = true;
+        for (int u : g[curr]) {
+            if (visited[u] == false) {
+                q.push(u);
+            }   
+        }
+    }
+} 
 
 int numIslands(std::vector<std::vector<char>>& grid) {
     int m = grid.size();
@@ -52,7 +68,21 @@ int numIslands(std::vector<std::vector<char>>& grid) {
     //     }
     //     std::cout << '\n';
     // }
-    return 0;
+
+    int countComponents = 0;
+    std::vector<bool> visited(g.size(), false);
+    for (int i = 0; i < g.size(); ++i) {
+        if (visited[i] == false) {
+            bfs(g, i, visited);
+            for (int v : visited) {
+                std::cout << v << ' ';
+            }
+            std::cout << '\n';
+            ++countComponents;
+        }
+    }
+
+    return countComponents;
 }
 
 int main() {
