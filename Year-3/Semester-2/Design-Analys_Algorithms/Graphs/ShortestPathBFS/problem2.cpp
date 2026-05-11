@@ -28,7 +28,7 @@ int main() {
     }
     Graph graph(ifs);
     graph.print();
-    int start = 0;
+    int start = 1; // vertices from input.txt are 1-based
     std::vector<int> levels = shortestPathBFS(graph, start - 1);
     for (int v = 0; v < levels.size(); ++v) {
         std::cout << "from " << start << " to " << v + 1 << ": " << levels[v] << '\n';
