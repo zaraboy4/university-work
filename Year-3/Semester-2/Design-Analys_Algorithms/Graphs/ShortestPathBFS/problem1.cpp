@@ -3,26 +3,24 @@
 #include <queue>
 
 int shortestPathBFS(const Graph& graph, int v, int u) {
+    if (v == u) return 0;
     std::vector<bool> visited(graph.V, false);
-    std::queue<int> q;
-    q.push(v);
+    std::queue<std::pair<int,int>> q;
+    q.push({v,0});
     visited[v] = true;
-    int cnt = 0;
     while (!q.empty()) {
-        int curr = q.front();
-        std::cout << curr + 1<< ' ';
+        std::pair<int,int> p = q.front();
+        //std::cout << '{' << p.first + 1 << ',' << p.second << "} ";
         q.pop();
-        //++cnt;
-        for (int node : graph.g[curr]) {
+        for (int node : graph.g[p.first]) {
             if (visited[node] == false) {
-                //if (node == u) return cnt;
-                //++cnt;
-                q.push(node);
+                if (node == u) return p.second + 1;
+                q.push({node, p.second + 1});
                 visited[node] = true;
             }
         }
     }
-    return cnt;
+    return -1;
 }
 
 int main() {
@@ -33,6 +31,8 @@ int main() {
     }
     Graph graph(ifs);
     graph.print();
-    std::cout << "Path length: " << shortestPathBFS(graph, 0, 4);
+    for (int i = 0; i < graph.V; ++i) {
+        std::cout << "Path length to " << i + 1<< ": " << shortestPathBFS(graph, 0, i) << '\n';
+    }
     return 0;
 }
