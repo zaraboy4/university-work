@@ -47,7 +47,7 @@ int main() {
         std::cout << "invalid file name\n";
         return 1;
     }
-    Graph graph(ifs, true);
+    Graph graph(ifs, false);
     graph.print();
     bool res = twoColouring(graph);
     std::cout << "is 2-coloring: " << res << '\n';
