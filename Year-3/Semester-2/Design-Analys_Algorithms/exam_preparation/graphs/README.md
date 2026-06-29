@@ -1,7 +1,5 @@
 # Problems on graphs
 ## Problem1
-Cycle detection on an undirected graph
+Cycle detection on graph (directed/undirected)
 ## Problem2
-Cycle detection on a directed graph
-## Problem3
 2-Colouring an undirected graph
