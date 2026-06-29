@@ -1,6 +1,6 @@
 # Bellman-Ford
 ## Input
-+ Weighted graph G(V,E) 
++ Directed Weighted graph G(V,E) 
 + vertex v
 ## Output
 + Shortest paths from v to all
