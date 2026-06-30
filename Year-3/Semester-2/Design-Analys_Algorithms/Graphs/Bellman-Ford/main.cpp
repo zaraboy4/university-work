@@ -6,14 +6,14 @@ std::vector<int> bellmanFord(const WeightedGraph& graph, int s) {
     dist[s] = 0;
     for (int i = 0; i < graph.V - 1; ++i) {
         for (const edge& e : graph.g) {
-            if (dist[e.from] + e.w < dist[e.to]) {
+            if (dist[e.from] != INT_MAX && dist[e.from] + e.w < dist[e.to]) {
                 dist[e.to] = dist[e.from] + e.w;
             }
         }
     }
 
     for (const edge& e : graph.g) {
-        if (dist[e.to] != INT_MAX && dist[e.from] + e.w < dist[e.to]) {
+        if (dist[e.from] != INT_MAX &&  dist[e.from] + e.w < dist[e.to]) {
             std::cout << "detected negative cycle\n";
         }
     }
